@@ -1,0 +1,7 @@
+.nav-pills .nav-link.active {
+  background-color: green !important;
+  color: white !important;
+}
+#homepage-tabs-tab-register, #homepage-tabs-tab-login {
+  color: black;
+}

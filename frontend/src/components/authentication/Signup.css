@@ -1,0 +1,27 @@
+.signup-profile-pic__container {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  position: relative;
+}
+.signup-profile-pic {
+  width: 100px;
+  border-radius: 50%;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(to right, #1b5e0b, #61d670) border-box;
+  border-radius: 50em;
+  border: 3px solid transparent;
+  border-radius: 50em;
+  object-fit: cover;
+  height: 100px;
+  margin-bottom: 20px;
+}
+.add-picture-icon {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  color: green;
+  background: white;
+  cursor: pointer;
+  z-index: 99;
+}

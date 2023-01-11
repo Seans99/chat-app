@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from "react-router-dom"
 import { Form, Button, InputGroup } from "react-bootstrap"
 import profilePic from "../../assets/images/profile-pic.png"
 import "./Signup.css"
@@ -20,6 +21,9 @@ function Signup() {
   const handleClick2 = () => setShow2(!show2);
 
   const submitHandler = () => { };
+
+  const navigate = useNavigate();
+
 
   const postDetails = (images) => {
     setImageLoading(true);
@@ -59,11 +63,34 @@ function Signup() {
     }
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!name, !email, !password, !image) {
+      return alert("Please fill in all the fields");
+    }
+
+    try {
+      const res = await fetch('/api/user', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, password, image })
+      });
+      const content = await res.json();
+      navigate("/chat");
+      console.log(content);
+    } catch (error) {
+      return alert("An error occured, please try again later")
+    }
+  }
+
   return (
     <div>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <div className="signup-profile-pic__container">
-          <img src={ imagePreview || profilePic} className="signup-profile-pic" />
+          <img src={imagePreview || profilePic} className="signup-profile-pic" />
           <label htmlFor='image-upload' className="image-upload-label">
             <i className='fas fa-plus-circle add-picture-icon'></i>
           </label>
@@ -106,4 +133,4 @@ function Signup() {
   )
 }
 
-  export default Signup
+export default Signup

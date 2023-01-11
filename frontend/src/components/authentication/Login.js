@@ -14,7 +14,7 @@ function Login() {
       <Form>
         <Form.Group className="mb-4" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} value={email} required />
+          <Form.Control type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email} required />
         </Form.Group>
 
         <Form.Group className="mb-5" controlId="formBasicPassword">

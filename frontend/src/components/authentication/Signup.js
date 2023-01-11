@@ -9,10 +9,9 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
 
-  const [image, setImage] = useState(null);
-  /* const [uploadingImg, setUploadingImg] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null); */
-  const [picLoading, setPicLoading] = useState(false);
+  const [image, setImage] = useState();
+  const [imageLoading, setImageLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const [show1, setShow1] = useState(false)
   const [show2, setShow2] = useState(false)
@@ -22,77 +21,49 @@ function Signup() {
 
   const submitHandler = () => { };
 
-  /* async function uploadImage() {
-    const data = new FormData();
-    data.append("file", image);
-    data.append("upload_preset", "chat-app");
-    data.append("cloud_name", "chat-app-upload-img")
-    try {
-      setUploadingImg(true);
-      let res = await fetch(process.env.CLOUDINARY_URL, {
-        method: "post",
-        body: data,
-      });
-      const urlData = await res.json();
-      setUploadingImg(false);
-      return urlData.url;
-    } catch (error) {
-      setUploadingImg(false);
-      console.log(error);
+  const postDetails = (images) => {
+    setImageLoading(true);
+    if (images === undefined) {
+      alert("Please select an image!")
+      return;
     }
-  }
-
-  function validateImg(e) {
-    const file = e.target.files[0];
-    if (file.size >= 1048576) {
-      return alert("Max file size is 1mb");
-    } else {
-      setImage(file);
-      setImagePreview(URL.createObjectURL(file));
-    }
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    if (!image) return alert("Please upload your profile picture");
-    const url = await uploadImage(image);
-    console.log(url);
-  } */
-
-  const postDetails = async (pics) => {
-    setPicLoading(true);
-    console.log(pics);
-    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+    console.log(images);
+    if (images.type === 'image/jpeg' || images.type === 'image/png') {
+      if (images.size >= 1048576) {
+        return alert("Max file size is 1mb");
+      } else {
+        setImage(images);
+        setImagePreview(URL.createObjectURL(images));
+      }
       const data = new FormData();
-      data.append("file", pics);
-      data.append("upload_preset", "chat-app");
-      data.append("cloud_name", "chat-app-upload-img");
-      fetch(process.env.CLOUDINARY_URL, {
-        method: "post",
+      data.append('file', images);
+      data.append('upload_preset', 'chat-app');
+      data.append('cloud_name', 'chat-app-upload-img');
+      fetch('https://api.cloudinary.com/v1_1/chat-app-upload-img/image/upload', {
+        method: 'post',
         body: data,
       })
         .then((res) => res.json())
         .then((data) => {
           setImage(data.url.toString());
-          console.log(data.url.toString());
-          setPicLoading(false);
+          setImageLoading(false);
         })
         .catch((err) => {
           console.log(err);
-          setPicLoading(false);
+          setImageLoading(false);
         });
     } else {
-      alert("Please select a profile picture")
-      setPicLoading(false);
+      alert("Please select an image!")
+      setImageLoading(false);
       return;
     }
-  };
+  }
 
   return (
     <div>
       <Form>
         <div className="signup-profile-pic__container">
-          <img src={image || profilePic} className="signup-profile-pic" />
+          <img src={ imagePreview || profilePic} className="signup-profile-pic" />
           <label htmlFor='image-upload' className="image-upload-label">
             <i className='fas fa-plus-circle add-picture-icon'></i>
           </label>
@@ -101,12 +72,12 @@ function Signup() {
 
         <Form.Group className="mb-4" controlId="formBasicName">
           <Form.Label>Name</Form.Label>
-          <Form.Control type="text" placeholder="Enter name" onChange={(e) => setName(e.target.value)} value={name} required />
+          <Form.Control type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} value={name} required />
         </Form.Group>
 
         <Form.Group className="mb-4" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} value={email} required />
+          <Form.Control type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email} required />
         </Form.Group>
 
         <Form.Group className="mb-4" controlId="formBasicPassword">
@@ -135,4 +106,4 @@ function Signup() {
   )
 }
 
-export default Signup
+  export default Signup

@@ -72,18 +72,26 @@ function Signup() {
       return alert("Passwords do not match!")
     }
 
+    //FIX FETCH!!!
+
     try {
-      const res = await fetch('/api/user', {
+      const data = { name, email, password, image };
+      fetch('/api/user', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password, image })
-      });
-      const content = await res.json();
-      navigate("/chat");
-      console.log(content);
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      console.log(data);
+      navigate("/chats");
     } catch (error) {
       return alert("An error occured, please try again later.")
     }

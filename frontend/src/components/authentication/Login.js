@@ -28,13 +28,6 @@ function Login() {
           <Button variant="success" type="submit" onClick={submitHandler}>
             Login
           </Button>
-          <Button variant="danger" onClick={() => {
-            setEmail("guest@example.com");
-            setPassword("123456");
-          }
-          }>
-            Get guest user credentials
-          </Button>
         </div>
       </Form>
     </div>

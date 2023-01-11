@@ -8,9 +8,12 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+
   const [image, setImage] = useState(null);
-  const [uploadingImg, setUploadingImg] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
+  /* const [uploadingImg, setUploadingImg] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null); */
+  const [picLoading, setPicLoading] = useState(false);
+
   const [show1, setShow1] = useState(false)
   const [show2, setShow2] = useState(false)
 
@@ -19,13 +22,14 @@ function Signup() {
 
   const submitHandler = () => { };
 
-  async function uploadImage() {
+  /* async function uploadImage() {
     const data = new FormData();
     data.append("file", image);
-    data.append("upload_preset", "your-preset-here");
+    data.append("upload_preset", "chat-app");
+    data.append("cloud_name", "chat-app-upload-img")
     try {
       setUploadingImg(true);
-      let res = await fetch("https://api.cloudinary.com/v1_1/chat-app-upload-img/image/upload", {
+      let res = await fetch(process.env.CLOUDINARY_URL, {
         method: "post",
         body: data,
       });
@@ -48,15 +52,51 @@ function Signup() {
     }
   }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!image) return alert("Please upload your profile picture");
+    const url = await uploadImage(image);
+    console.log(url);
+  } */
+
+  const postDetails = async (pics) => {
+    setPicLoading(true);
+    console.log(pics);
+    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("upload_preset", "chat-app");
+      data.append("cloud_name", "chat-app-upload-img");
+      fetch(process.env.CLOUDINARY_URL, {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setImage(data.url.toString());
+          console.log(data.url.toString());
+          setPicLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setPicLoading(false);
+        });
+    } else {
+      alert("Please select a profile picture")
+      setPicLoading(false);
+      return;
+    }
+  };
+
   return (
     <div>
       <Form>
         <div className="signup-profile-pic__container">
-          <img src={imagePreview || profilePic} className="signup-profile-pic" />
+          <img src={image || profilePic} className="signup-profile-pic" />
           <label htmlFor='image-upload' className="image-upload-label">
             <i className='fas fa-plus-circle add-picture-icon'></i>
           </label>
-          <input type="file" id="image-upload" hidden accept="image/png, image/jpeg" onChange={validateImg} />
+          <input type="file" id="image-upload" hidden accept="image/png, image/jpeg" onChange={(e) => postDetails(e.target.files[0])} />
         </div>
 
         <Form.Group className="mb-4" controlId="formBasicName">

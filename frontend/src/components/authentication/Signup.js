@@ -66,7 +66,10 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name, !email, !password, !image) {
-      return alert("Please fill in all the fields");
+      return alert("Please fill in all the fields!");
+    }
+    if (!password === confirmPassword) {
+      return alert("Passwords do not match!")
     }
 
     try {
@@ -82,7 +85,7 @@ function Signup() {
       navigate("/chat");
       console.log(content);
     } catch (error) {
-      return alert("An error occured, please try again later")
+      return alert("An error occured, please try again later.")
     }
   }
 

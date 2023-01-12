@@ -3,7 +3,6 @@ import { Container, Card, Row, Col, Tab, Tabs } from "react-bootstrap"
 import "./Home.css";
 import Login from "../components/authentication/Login.js"
 import Signup from '../components/authentication/Signup';
-import { Helmet } from "react-helmet";
 
 function Home() {
   return (

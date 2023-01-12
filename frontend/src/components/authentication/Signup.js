@@ -24,7 +24,6 @@ function Signup() {
 
   const navigate = useNavigate();
 
-
   const postDetails = (images) => {
     setImageLoading(true);
     if (images === undefined) {
@@ -71,8 +70,6 @@ function Signup() {
     if (!password === confirmPassword) {
       return alert("Passwords do not match!")
     }
-
-    //FIX FETCH!!!
 
     try {
       const data = { name, email, password, image };

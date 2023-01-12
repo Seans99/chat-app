@@ -29,7 +29,7 @@ export const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      picture: user.pic,
+      picture: user.image,
       token: generateToken(user._id),
     });
   } else {
@@ -46,7 +46,7 @@ export const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      picture: user.pic,
+      picture: user.image,
       token: generateToken(user._id),
     })
   } else {

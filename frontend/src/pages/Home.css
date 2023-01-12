@@ -4,4 +4,8 @@
 }
 #homepage-tabs-tab-register, #homepage-tabs-tab-login {
   color: black;
+  border: 1px solid green;
+}
+.nav-item {
+  margin: 5px;
 }

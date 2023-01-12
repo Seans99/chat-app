@@ -1,13 +1,45 @@
 import React, { useState } from 'react'
 import { Form, Button, InputGroup } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false)
 
+  const navigate = useNavigate();
+
   const handleClick = () => setShow(!show);
-  const submitHandler = () => { };
+
+  const submitHandler = (e) => { 
+    e.preventDefault();
+    if (!email, !password) {
+      return alert("Please fill in all the fields!");
+    }
+
+    try {
+      const data = { email, password };
+      fetch('/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      console.log(data);
+      navigate("/chats");
+    } catch (error) {
+      return alert("An error occured, please try again later.")
+    }
+  };
 
   return (
     <div>

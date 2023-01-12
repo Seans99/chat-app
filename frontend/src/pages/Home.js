@@ -8,9 +8,6 @@ import { Helmet } from "react-helmet";
 function Home() {
   return (
     <Container style={{ maxWidth: "70%" }}>
-      <Helmet>
-        <title>Chat App | Home</title>
-      </Helmet>
       <Row>
         <Col>
           <Card className="d-flex align-items-center justify-content-center flex-direction-column" style={{

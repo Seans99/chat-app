@@ -13,10 +13,7 @@ function Home() {
             backgroundColor: "white",
             margin: "80px 0 15px 0",
           }}>
-            <Card.Body style={{
-              fontSize: "300%",
-              fontFamily: "'Pacifico', cursive",
-            }}>Chat app</Card.Body>
+            <Card.Body className="title"><span className="live">Live</span> chat</Card.Body>
           </Card>
         </Col>
       </Row>

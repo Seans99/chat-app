@@ -9,3 +9,18 @@
 .nav-item {
   margin: 5px;
 }
+
+.live {
+  background: -webkit-linear-gradient(rgb(51, 248, 2), #333);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title {
+  font-size: 450%;
+  background: -webkit-linear-gradient(rgb(255, 255, 255), rgb(0, 0, 0));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Kalam', cursive;
+  font-weight: bold;
+}

@@ -4,6 +4,7 @@ import chats from "./data/data.js";
 import connectDB from "./config/db.js";
 import colors from "colors";
 import userRoutes from "./routes/userRoutes.js"
+import chatRoutes from "./routes/chatRoutes.js"
 
 const app = express();
 dotenv.config();
@@ -12,6 +13,7 @@ connectDB();
 app.use(express.json());
 
 app.use("/api/user", userRoutes);
+app.use("/api/chat", chatRoutes)
 
 app.get("/", (req, res) => {
   res.send("API is running");

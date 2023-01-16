@@ -1,0 +1,22 @@
+.searchbarTitle {
+  background: -webkit-linear-gradient(rgb(255, 255, 255), rgb(0, 0, 0));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Kalam', cursive;
+  font-weight: bold;
+  margin: 0;
+  margin-top: 0.5%;
+}
+
+.bell-img, .search-img {
+  filter: brightness(0) invert(1);
+}
+
+#dropdown-search-bar::after{
+  display: none !important; 
+}
+
+.search-bar-profile-pic {
+  
+}

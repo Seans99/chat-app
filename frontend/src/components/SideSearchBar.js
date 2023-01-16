@@ -21,11 +21,15 @@ function SideSearchBar() {
     <>
       <Container className="d-flex align-items-center" style={{
         justifyContent: "space-between",
-        maxWidth: "100%",
+        // 100% for full screen
+        maxWidth: "95%",
         width: "100%",
         background: "white",
         padding: "1%",
-        border: "5px solid darkgreen"
+        border: "5px solid darkgreen",
+        // Might remove later
+        borderRadius: "20px",
+        marginTop: "2%"
       }}>
         {['right'].map((placement) => (
           <OverlayTrigger

@@ -19,7 +19,7 @@ function ProfileModal({ user, children }) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <img src={user.image} />
+          <img src={user.picture} />
           <p>{user.email}</p>
         </Modal.Body>
         <Modal.Footer>

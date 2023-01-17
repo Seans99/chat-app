@@ -58,7 +58,7 @@ function SideSearchBar() {
           </DropdownButton>
           <span style={{margin:"5%"}}></span>
           <DropdownButton id="dropdown-search-bar" title={
-            <Image src={user.image} width={"25"} height={"25"} />
+            <Image src={user.picture} width={"25"} height={"25"} />
           } variant="success">
             <ProfileModal user={user}>
               <Dropdown.Item>My Profile</Dropdown.Item>

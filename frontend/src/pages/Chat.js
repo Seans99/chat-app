@@ -6,6 +6,7 @@ import MyChats from '../components/MyChats'
 import ChatBox from '../components/ChatBox'
 
 function Chat() {
+
   const { user } = ChatState()
 
   return (

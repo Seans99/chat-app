@@ -29,11 +29,12 @@ function Login() {
         .then((response) => response.json())
         .then((data) => {
           console.log('Success:', data);
+          localStorage.setItem("userInfo", JSON.stringify(data));
         })
         .catch((error) => {
           console.error('Error:', error);
+          return alert("An error occured, please try again later.")
         });
-      localStorage.setItem("userInfo", JSON.stringify(data));
       console.log(data);
       navigate("/chats");
     } catch (error) {

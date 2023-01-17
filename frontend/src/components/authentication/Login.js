@@ -11,7 +11,7 @@ function Login() {
 
   const handleClick = () => setShow(!show);
 
-  const submitHandler = (e) => { 
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (!email, !password) {
       return alert("Please fill in all the fields!");
@@ -19,7 +19,7 @@ function Login() {
 
     try {
       const data = { email, password };
-      fetch('/api/user/login', {
+      await fetch('/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

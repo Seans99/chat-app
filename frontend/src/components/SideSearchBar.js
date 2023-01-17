@@ -3,9 +3,10 @@ import { Container, Tooltip, Button, OverlayTrigger, Dropdown, DropdownButton, I
 import { useState } from 'react'
 import searchIcon from "../assets/images/search.png";
 import bellIcon from "../assets/images/bell.png";
-import profilePic from "../assets/images/profile-pic.png";
 import "./SideSearchBar.css"
 import { ChatState } from '../context/ChatProvider';
+import ProfileModal from './ProfileModal';
+import { useNavigate } from "react-router-dom"
 
 
 function SideSearchBar() {
@@ -17,19 +18,21 @@ function SideSearchBar() {
 
   const { user } = ChatState();
 
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem("userInfo");
+    navigate("/");
+  }
   return (
     <>
       <Container className="d-flex align-items-center" style={{
         justifyContent: "space-between",
-        // 100% for full screen
-        maxWidth: "95%",
+        maxWidth: "100%",
         width: "100%",
         background: "white",
         padding: "1%",
         border: "5px solid darkgreen",
-        // Might remove later
-        borderRadius: "20px",
-        marginTop: "2%"
       }}>
         {['right'].map((placement) => (
           <OverlayTrigger
@@ -54,9 +57,13 @@ function SideSearchBar() {
           <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
           </DropdownButton>
           <span style={{margin:"5%"}}></span>
-          <DropdownButton id="dropdown-search-bar" title={<Image src={profilePic || user.image} width={"25"} height={"25"} />} variant="success">
-            <Dropdown.Item href="#/action-1">My Profile</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Logout</Dropdown.Item>
+          <DropdownButton id="dropdown-search-bar" title={
+            <Image src={user.image} width={"25"} height={"25"} />
+          } variant="success">
+            <ProfileModal user={user}>
+              <Dropdown.Item>My Profile</Dropdown.Item>
+            </ProfileModal>
+            <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
           </DropdownButton>
         </div>
         

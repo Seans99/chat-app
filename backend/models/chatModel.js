@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const chatModel = mongoose.Schema(
   {
-    chatName: { type: String, trim: true },
+    chatName: { type: "String", trim: true },
     isGroupChat: { type: Boolean },
     users: [
       {

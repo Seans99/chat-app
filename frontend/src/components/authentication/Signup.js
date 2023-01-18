@@ -10,8 +10,7 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
 
-  const [image, setImage] = useState();
-  const [imageLoading, setImageLoading] = useState(false);
+  const [picture, setPicture] = useState();
   const [imagePreview, setImagePreview] = useState(null);
 
   const [show1, setShow1] = useState(false)
@@ -25,7 +24,6 @@ function Signup() {
   const navigate = useNavigate();
 
   const postDetails = (images) => {
-    setImageLoading(true);
     if (images === undefined) {
       alert("Please select an image!")
       return;
@@ -35,7 +33,7 @@ function Signup() {
       if (images.size >= 1048576) {
         return alert("Max file size is 1mb");
       } else {
-        setImage(images);
+        setPicture(images);
         setImagePreview(URL.createObjectURL(images));
       }
       const data = new FormData();
@@ -48,23 +46,21 @@ function Signup() {
       })
         .then((res) => res.json())
         .then((data) => {
-          setImage(data.url.toString());
-          setImageLoading(false);
+          setPicture(data.url.toString());
+          console.log(data.url.toString());
         })
         .catch((err) => {
           console.log(err);
-          setImageLoading(false);
         });
     } else {
       alert("Please select an image!")
-      setImageLoading(false);
       return;
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name, !email, !password, !image) {
+    if (!name, !email, !password, !picture) {
       return alert("Please fill in all the fields!");
     }
     if (!password === confirmPassword) {
@@ -72,7 +68,7 @@ function Signup() {
     }
 
     try {
-      const data = { name, email, password, image };
+      const data = { name, email, password, picture };
       fetch('/api/user', {
         method: 'POST',
         headers: {

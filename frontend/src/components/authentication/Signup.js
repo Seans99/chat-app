@@ -83,11 +83,11 @@ function Signup() {
         .then((response) => response.json())
         .then((data) => {
           console.log('Success:', data);
+          localStorage.setItem("userInfo", JSON.stringify(data));
         })
         .catch((error) => {
           console.error('Error:', error);
         });
-      localStorage.setItem("userInfo", JSON.stringify(data));
       console.log(data);
       navigate("/chats");
     } catch (error) {

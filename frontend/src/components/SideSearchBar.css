@@ -16,3 +16,16 @@
 #dropdown-search-bar::after{
   display: none !important; 
 }
+
+.navbar-toggler-icon {
+  background-image: url("../assets/images/search.png")!important;
+}
+#sideDrawer {
+  margin: 0 !important;
+  background-color: white !important;
+}
+
+.collapsed {
+  border: none !important;
+}
+

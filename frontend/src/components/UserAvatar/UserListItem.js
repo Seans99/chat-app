@@ -4,7 +4,7 @@ import "./UserListItem.css"
 
 function UserListItem({ user, handleFunction }) {
   return (
-    <Card className="userList" style={{ marginTop: "5%", marginBottom: "5%", width: "95%", cursor: "pointer", background: "#E8E8E8", border:"none" }} onClick={handleFunction}>
+    <Card className="userList" style={{ marginTop: "3%", marginBottom: "2%", width: "95%", cursor: "pointer", background: "#E8E8E8", border:"none" }} onClick={handleFunction}>
       <Row>
         <Col style={{display:"flex"}}>
           <Image style={{ margin: "3%", marginRight:"10%"}} src={user.picture} width={50} height={50} roundedCircle />

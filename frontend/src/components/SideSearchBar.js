@@ -4,7 +4,7 @@ import { useState } from 'react'
 import bellIcon from "../assets/images/bell.png";
 import "./SideSearchBar.css"
 import { ChatState } from '../context/ChatProvider';
-import ProfileModal from './ProfileModal';
+import ProfileModal from './Modals/ProfileModal';
 import { useNavigate } from "react-router-dom";
 import ChatLoading from './ChatLoading';
 import UserListItem from './UserAvatar/UserListItem';

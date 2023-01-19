@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Modal, Button, Image } from "react-bootstrap"
-import viewIcon from "../assets/images/view.png"
+import viewIcon from "../../assets/images/view.png"
 
 function ProfileModal({ user, children }) {
   const [modalShow, setModalShow] = useState(false);
@@ -17,6 +17,8 @@ function ProfileModal({ user, children }) {
         <Modal.Header closeButton style={{border:"none"}}>
         </Modal.Header>
         <Modal.Body>
+          <h1 style={{ fontSize: "200%", fontFamily: "kalam", margin: "0 auto", marginBottom: "1%" }}>My profile</h1>
+          <hr style={{ width: "30%", margin: "0 auto", marginBottom: "5%" }} />
           <Image src={user.picture} width={300} height={300} style={{ marginBottom: "2%" }} />
           <p style={{ fontSize: "150%" }}>{user.name}</p>
           <hr style={{width:"30%", margin:"0 auto"}} />

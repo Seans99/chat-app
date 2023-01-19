@@ -4,6 +4,7 @@ import { ChatState } from '../context/ChatProvider';
 import ChatLoading from './ChatLoading';
 import { getSender } from '../config/ChatLogics';
 import "./MyChats.css"
+import GroupChatModal from './Modals/GroupChatModal';
 
 function MyChats() {
   const [loggedUser, setLoggedUser] = useState();
@@ -39,9 +40,11 @@ function MyChats() {
       <Card style={{ display: "flex", flexDirection: "column", padding: "3%", border: "1px solid darkgreen" }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <Card.Header style={{ background: "white", border: "none", fontSize: "150%", fontFamily: "Kalam", fontWeight: "bold" }}>My Chats</Card.Header>
-          <Button variant="success">
-            New group chat +
-          </Button>
+          <GroupChatModal>
+            <Button variant="success">
+              New group chat +
+            </Button>
+          </GroupChatModal>
         </div>
         <Card.Body>
           {chats ? (
@@ -53,7 +56,7 @@ function MyChats() {
                   marginBottom: "5%",
                   marginTop: "5%",
                   padding: "3%",
-                  borderRadius:"10px"
+                  borderRadius: "10px"
                 }} key={chat._id}>
                   <div>
                     {!chat.isGroupChat

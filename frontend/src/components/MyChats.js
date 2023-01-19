@@ -91,6 +91,10 @@ function MyChats({fetchAgain}) {
         .then((data) => {
           console.log('Success:', data);
           setChats([data, ...chats])
+          setSelectedUsers([])
+          setGroupChatName()
+          setSearch("")
+          setSearchResult([])
           handleClose();
         })
         .catch((error) => {

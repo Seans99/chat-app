@@ -1,6 +1,9 @@
 import React from 'react'
+import { ChatState } from '../context/ChatProvider'
 
-function SingleChat() {
+function SingleChat({ fetchAgain, setFetchAgain }) {
+  const { } = ChatState();
+
   return (
     <div>SingleChat</div>
   )

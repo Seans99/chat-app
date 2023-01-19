@@ -49,16 +49,6 @@ function ChatLoading() {
           <ProgressBar style={{ marginBottom: "10%" }} variant="light" animated now={100} />
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <ProgressBar style={{ marginBottom: "10%" }} variant="light" animated now={100} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <ProgressBar style={{ marginBottom: "10%" }} variant="light" animated now={100} />
-        </Col>
-      </Row>
     </Container>
   )
 }

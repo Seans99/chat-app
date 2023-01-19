@@ -12,7 +12,7 @@ function Chat() {
   return (
     <div style={{ width: "100%" }}>
       {user && <SideSearchBar />}
-      <Container>
+      <Container style={{maxWidth:"100%", marginTop:"3%"}}>
         <Row>
           <Col>
             {user && <MyChats />}

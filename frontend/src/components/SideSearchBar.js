@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Button, Dropdown, DropdownButton, Image, Navbar, Offcanvas, Form, Nav } from 'react-bootstrap'
+import { Container, Button, Dropdown, DropdownButton, Image, Navbar, Offcanvas, Form, Nav, Spinner } from 'react-bootstrap'
 import { useState } from 'react'
 import bellIcon from "../assets/images/bell.png";
 import "./SideSearchBar.css"
@@ -16,7 +16,7 @@ function SideSearchBar() {
   const [loading, setLoading] = useState(false)
   const [loadingChat, setLoadingChat] = useState();
 
-  const { user, setSelectedChat, chats, setChats } = ChatState();
+  const { user, setSelectedChat, selectedChat, chats, setChats } = ChatState();
 
   const navigate = useNavigate();
 
@@ -64,14 +64,17 @@ function SideSearchBar() {
         .then((response) => response.json())
         .then((data) => {
           console.log('Success:', data);
-          console.log(data);
+          if (!chats.find((c) => c._id === data._id)) {
+            setChats([data, ...chats])
+          }
+          setSelectedChat(data);
+          setLoadingChat(false);
         })
         .catch((error) => {
           console.error('Error:', error);
           return alert("An error occured, please try again later.")
         });
-      setSelectedChat(data);
-      setLoadingChat(false);
+      
     } catch (error) {
       return alert("Error fetching the chat!");
     }
@@ -87,7 +90,7 @@ function SideSearchBar() {
         padding: "1%",
         border: "5px solid darkgreen",
       }}>
-        {[false,].map((expand) => (
+        {[false].map((expand) => (
           <Navbar id="sideDrawer" key={expand} bg="success" expand={expand} className="mb-3" style={{ borderRadius: "5px", margin: "0 !important" }}>
             <Container fluid>
               <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
@@ -120,6 +123,7 @@ function SideSearchBar() {
                       <UserListItem key={user._id} user={user} handleFunction={() => accessChat(user._id)} />
                     ))
                   )}
+                  {loadingChat && <Spinner style={{margin:"0 auto !important"}} animation="border" varieant="success" ml="auto" d="flex" />}
                 </Offcanvas.Body>
               </Navbar.Offcanvas>
             </Container>

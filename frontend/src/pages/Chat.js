@@ -12,15 +12,15 @@ function Chat() {
   return (
     <div style={{ width: "100%" }}>
       {user && <SideSearchBar />}
-      <Container style={{maxWidth:"100%", marginTop:"3%"}}>
-        <Row>
-          <Col>
+      <Container style={{ maxWidth: "100%", marginTop: "3%" }}>
+        <div style={{ display: "flex" }}>
+          <div style={{ width:"30%" }}>
             {user && <MyChats />}
-          </Col>
-          <Col>
+          </div>
+          <div style={{ width: "70%" }}>
             {user && <ChatBox />}
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Container>
     </div>
   )

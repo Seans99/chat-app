@@ -13,7 +13,7 @@ function Login() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (!email, !password) {
+    if (!email || !password) {
       return alert("Please fill in all the fields!");
     }
 

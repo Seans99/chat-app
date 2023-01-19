@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Button, Dropdown, DropdownButton, Image, Navbar, Offcanvas, Form, Nav, Spinner } from 'react-bootstrap'
+import { Container, Button, Dropdown, DropdownButton, Image, Navbar, Offcanvas, Form, Spinner } from 'react-bootstrap'
 import { useState } from 'react'
 import bellIcon from "../assets/images/bell.png";
 import "./SideSearchBar.css"

@@ -60,7 +60,7 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name, !email, !password, !picture) {
+    if (!name || !email || !password || !picture) {
       return alert("Please fill in all the fields!");
     }
     if (!password === confirmPassword) {
@@ -95,7 +95,7 @@ function Signup() {
     <div>
       <Form onSubmit={handleSubmit}>
         <div className="signup-profile-pic__container">
-          <img src={imagePreview || profilePic} className="signup-profile-pic" />
+          <img src={imagePreview || profilePic} alt="profile-pic" className="signup-profile-pic" />
           <label htmlFor='image-upload' className="image-upload-label">
             <i className='fas fa-plus-circle add-picture-icon'></i>
           </label>

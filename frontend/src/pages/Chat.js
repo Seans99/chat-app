@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import { Card, Container, Row, Col } from 'react-bootstrap'
+import React, { useState } from 'react'
 import { ChatState } from '../context/ChatProvider'
 import SideSearchBar from '../components/SideSearchBar'
 import MyChats from '../components/MyChats'
 import ChatBox from '../components/ChatBox'
+import { MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit';
 
 function Chat() {
 
-  const { user } = ChatState()
+  const { user } = ChatState();
+  const [fetchAgain, setFetchAgain] = useState(false);
 
   return (
     <div style={{ width: "100%" }}>
       {user && <SideSearchBar />}
-      <Container style={{ maxWidth: "100%", marginTop: "3%" }}>
-        <div style={{ display: "flex" }}>
-          <div style={{ width:"30%" }}>
-            {user && <MyChats />}
-          </div>
-          <div style={{ width: "70%" }}>
-            {user && <ChatBox />}
-          </div>
-        </div>
-      </Container>
+      <MDBContainer style={{ marginTop: "3%", maxWidth:"100%"}}>
+          <MDBRow>
+          <MDBCol size='md-4' style={{ marginBottom:"3%"}}>
+            {user && <MyChats fetchAgain={fetchAgain} />}
+            </MDBCol>
+            <MDBCol size='md-8'>
+              {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}
+            </MDBCol>
+          </MDBRow>
+        </MDBContainer>
     </div>
   )
 }

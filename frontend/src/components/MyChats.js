@@ -7,7 +7,7 @@ import "./MyChats.css"
 import UserListItem from './UserAvatar/UserListItem';
 import UserBadgeItem from './UserAvatar/UserBadgeItem';
 
-function MyChats() {
+function MyChats({fetchAgain}) {
   const [loggedUser, setLoggedUser] = useState();
 
   // MODAL USESTATES
@@ -44,7 +44,7 @@ function MyChats() {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
-  }, [])
+  }, [fetchAgain])
 
   const handleSearch = async (query) => {
     setSearch(query);

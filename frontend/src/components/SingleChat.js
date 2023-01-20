@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Container, Row, Col, Image, Modal, Button, Form, InputGroup, } from 'react-bootstrap';
+import { Container, Row, Col, Image, Modal, Button, Form, InputGroup, Spinner } from 'react-bootstrap';
 import { ChatState } from '../context/ChatProvider'
 import arrowBack from "../assets/images/back.png"
 import { getSender, getSenderFull } from "../config/ChatLogics.js"
@@ -15,12 +15,48 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false)
   const [renameLoading, setRenameLoading] = useState(false)
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState()
 
-  // MODAL USESTATES
+  // MODAL USESTATE
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+
+
+  const typingHandler = (e) => {
+    setNewMessage(e.target.value);
+  }
+
+  const sendMessage = async (e) => {
+    if (e.key === "Enter" && newMessage) {
+      try {
+        setNewMessage("")
+        const data = { content: newMessage, chatId: selectedChat._id };
+        await fetch('/api/message', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${user.token}`
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Success:', data);
+            setMessages([...messages, data])
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            return alert("An error occured, please try again later.")
+          });
+      } catch (error) {
+        return alert("Error sending message!");
+      }
+    }
+  }
 
   const handleRemove = async (user1) => {
     if (selectedChat.groupAdmin._id !== user._id && user1._id !== user.id) {
@@ -54,7 +90,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       setLoading(false);
       return alert("Error adding user to group");
     }
-  }  
+  }
 
   const handleAddUser = async (user1) => {
     if (selectedChat.users.find((u) => u._id === user1._id)) {
@@ -152,7 +188,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
     }
   }
 
-  
+
 
   return (
     <>
@@ -176,10 +212,10 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                   <ProfileModal user={getSenderFull(user, selectedChat.users)} />
                 </>
               ) : (
-                  <>
-                    <div style={{fontFamily:"kalam", fontWeight:"bold", fontSize:"110%"}}>
-                      {selectedChat.chatName.toUpperCase()}
-                    </div>
+                <>
+                  <div style={{ fontFamily: "kalam", fontWeight: "bold", fontSize: "110%" }}>
+                    {selectedChat.chatName.toUpperCase()}
+                  </div>
                   <img style={{ cursor: "pointer" }} src={viewIcon} alt="view-icon" onClick={handleShow}></img>
                   <Modal
                     size="lg"
@@ -192,32 +228,32 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                     <Modal.Header closeButton style={{ border: "none" }}>
                     </Modal.Header>
                     <Modal.Body>
-                        <div style={{ display: "flex", justifyContent: "center", marginBottom: "3%" }}>
+                      <div style={{ display: "flex", justifyContent: "center", marginBottom: "3%" }}>
                         {selectedChat.users.map((u) => (
                           <UserBadgeItem key={u._id} user={u} handleFunction={() => handleRemove(u)} />
                         ))}
                       </div>
 
-                        <Form preventDefault style={{ display: "flex", flexDirection: "column", width: "60%", margin: "0 auto", paddingBottom: "10%" }}>
+                      <Form preventDefault style={{ display: "flex", flexDirection: "column", width: "60%", margin: "0 auto", paddingBottom: "10%" }}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                           <InputGroup>
-                              <Form.Control type="text" placeholder="Chat name" value={groupChatName} onChange={(e) => setGroupChatName(e.target.value)} />
-                              <Button variant="success" onClick={handleRename}>Update</Button>
+                            <Form.Control type="text" placeholder="Chat name" value={groupChatName} onChange={(e) => setGroupChatName(e.target.value)} />
+                            <Button variant="success" onClick={handleRename}>Update</Button>
                           </InputGroup>
-                          </Form.Group>
-                          <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Control type="search" placeholder="Add user to group" onChange={(e) => handleSearch(e.target.value)} />
-                          </Form.Group>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                          <Form.Control type="search" placeholder="Add user to group" onChange={(e) => handleSearch(e.target.value)} />
+                        </Form.Group>
 
-                          {loading ? <div>Loading...</div> : (
-                            searchResult?.map((user) => (
-                              <div style={{ width: "80%", margin: "0 auto" }}>
-                                <UserListItem key={user._id} user={user} handleFunction={() => handleAddUser(user)} />
-                              </div>
-                            ))
-                          )}
+                        {loading ? <div>Loading...</div> : (
+                          searchResult?.map((user) => (
+                            <div style={{ width: "80%", margin: "0 auto" }}>
+                              <UserListItem key={user._id} user={user} handleFunction={() => handleAddUser(user)} />
+                            </div>
+                          ))
+                        )}
 
-                          <Button variant="danger" onClick={() => handleRemove(user)}>Leave group</Button>
+                        <Button id="sendMessageButton" variant="danger" onClick={() => handleRemove(user)}>Leave group</Button>
                       </Form>
                     </Modal.Body>
                   </Modal>
@@ -238,7 +274,28 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
               overflow: "hidden",
               marginTop: "2%"
             }}>
-              {/* Messages here */}
+              {loading ? (
+                <Spinner animation="border" role="status" variant="success" style={{ margin: "auto", alignSelf: "center" }}>
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              ) : (
+                <div>
+
+                  {/* Messages */}
+
+                  <InputGroup className="mt-3">
+                    <Form.Control style={{ background: "#E0E0E0", border: "none" }}
+                      type="text"
+                      placeholder="Enter a message..."
+                      onKeyDown={sendMessage}
+                      isRequired
+                      onChange={typingHandler}
+                      value={newMessage}
+                    />
+                  </InputGroup>
+                </div>
+
+              )}
             </div>
           </div>
 

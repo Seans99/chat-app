@@ -5,15 +5,15 @@ import closeButton from "../../assets/images/close.png"
 function UserBadgeItem({ user, handleFunction }) {
   return (
     <Container style={{
-      padding: "2%",
+      padding: "1%",
       borderRadius: "15px",
-      margin: "3%",
+      margin: "1%",
       background: "#198754",
       cursor: "pointer",
       color: "white",
       display: "flex",
       justifyContent: "space-between",
-      maxWidth: "30%",
+      maxWidth: "20%",
       fontSize:"80%"
     }}
       onClick={handleFunction}>

@@ -288,13 +288,11 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                       type="text"
                       placeholder="Enter a message..."
                       onKeyDown={sendMessage}
-                      isRequired
                       onChange={typingHandler}
                       value={newMessage}
                     />
                   </InputGroup>
                 </div>
-
               )}
             </div>
           </div>

@@ -140,7 +140,7 @@ function MyChats({fetchAgain}) {
             <Modal.Body>
               <h1 style={{ fontSize: "200%", fontFamily: "kalam", margin: "0 auto", marginBottom: "1%", textAlign: "center" }}>Create group chat</h1>
               <hr style={{ width: "30%", margin: "0 auto", marginBottom: "5%" }} />
-              <Form preventDefault style={{ display: "flex", flexDirection: "column", width: "60%", margin: "0 auto" }}>
+              <Form style={{ display: "flex", flexDirection: "column", width: "60%", margin: "0 auto" }}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Control type="text" placeholder="Chat name" onChange={(e) => setGroupChatName(e.target.value)} />
                 </Form.Group>
@@ -150,13 +150,12 @@ function MyChats({fetchAgain}) {
                 <div style={{ display: "flex", flexWrap: "wrap", width: "100%" }}>
                   {selectedUsers.map((user) => (
                     <UserBadgeItem key={user._id} user={user} handleFunction={() => handleDelete(user)} />
-
                   ))}
                 </div>
 
                 {loading ? <div>Loading...</div> : (
                   searchResult?.slice(0.4).map((user) => (
-                    <div style={{ width: "80%", margin: "0 auto" }}>
+                    <div key={user._id} style={{ width: "80%", margin: "0 auto" }}>
                       <UserListItem key={user._id} user={user} handleFunction={() => handleGroup(user)} />
                     </div>
                   ))

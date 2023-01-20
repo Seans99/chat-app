@@ -299,7 +299,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
 
         ) : (
           <div>
-            <h1 style={{ fontFamily: "kalam", textAlign: "center", }}>Click on a user to start chatting</h1>
+            <h1 style={{ fontFamily: "kalam", textAlign: "center", marginTop:"30vh" }}>Click on a user to start chatting</h1>
           </div>
         )
       }

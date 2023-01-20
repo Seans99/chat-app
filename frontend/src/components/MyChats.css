@@ -1,4 +1,8 @@
 .chats:hover {
   background: #198754 !important;
-  color: white;;
+  color: white;
+}
+.selected {
+  background: #198754 !important;
+  color: white;
 }

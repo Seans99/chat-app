@@ -174,7 +174,7 @@ function MyChats({fetchAgain}) {
           {chats ? (
             <div>
               {chats.map((chat) => (
-                <Container className="chats" onClick={() => { setSelectedChat(chat) }} style={{
+                <Container className={selectedChat === chat ? "selected" : "chats"} onClick={() => { setSelectedChat(chat) }} style={{
                   cursor: "pointer",
                   background: "#E8E8E8",
                   marginBottom: "5%",

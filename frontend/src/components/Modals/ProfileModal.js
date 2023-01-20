@@ -36,7 +36,7 @@ function ProfileModal({ user, children }) {
       {children ? (
         <span onClick={() => setModalShow(true)}>{children}</span>
       ) : (
-        <img src={viewIcon} alt="view-icon"></img>)}
+          <img style={{cursor:"pointer"}} src={viewIcon} alt="view-icon" onClick={() => setModalShow(true)}></img>)}
 
       <MyVerticallyCenteredModal
         show={modalShow}

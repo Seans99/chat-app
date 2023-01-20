@@ -9,8 +9,8 @@ function ChatBox({fetchAgain, setFetchAgain}) {
 
   return (
     <Container>
-      <Card style={{ display: "flex", flexDirection: "column", alignItems:"center", padding: "3%", border: "1px solid darkgreen" }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <Card style={{ minHeight:"80vh", display: "flex", flexDirection: "column", alignItems:"center", padding: "3%", border: "1px solid darkgreen" }}>
+        <div style={{ width:"100%" }}>
           <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
         </div>
       </Card>

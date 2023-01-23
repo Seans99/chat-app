@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Container, Row, Col, Image, Modal, Button, Form, InputGroup, Spinner } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react'
+import { Image, Modal, Button, Form, InputGroup, Spinner } from 'react-bootstrap';
 import { ChatState } from '../context/ChatProvider'
 import arrowBack from "../assets/images/back.png"
 import { getSender, getSenderFull } from "../config/ChatLogics.js"
@@ -7,6 +7,7 @@ import ProfileModal from './Modals/ProfileModal';
 import viewIcon from "../assets/images/view.png"
 import UserBadgeItem from './UserAvatar/UserBadgeItem';
 import UserListItem from './UserAvatar/UserListItem';
+import ScrollableChat from './ScrollableChat';
 
 function SingleChat({ fetchAgain, setFetchAgain }) {
   const { user, selectedChat, setSelectedChat } = ChatState();
@@ -16,7 +17,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
   const [loading, setLoading] = useState(false)
   const [renameLoading, setRenameLoading] = useState(false)
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState()
+  const [newMessage, setNewMessage] = useState("")
 
   // MODAL USESTATE
   const [show, setShow] = useState(false);
@@ -24,7 +25,30 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const fetchMessages = async () => {
+    if (!selectedChat) return;
 
+    try {
+      setLoading(true)
+      const data = await fetch(`/api/message/${selectedChat._id}`, {
+        method: 'GET',
+        headers: {
+          "Authorization": `Bearer ${user.token}`
+        }
+      }).then(data => {
+        return data.json();
+      });
+      setMessages(data)
+      setLoading(false)
+      console.log(data)
+    } catch (error) {
+      return alert("Failed to load messages!")
+    }
+  }
+
+  useEffect(() => {
+    fetchMessages();
+  }, [selectedChat])
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
@@ -79,6 +103,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
           console.log('Success:', data);
           user1._id === user._id ? setSelectedChat() : setSelectedChat(data)
           setFetchAgain(!fetchAgain);
+          fetchMessages();
           setLoading(false);
         })
         .catch((error) => {
@@ -279,27 +304,31 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                   <span className="visually-hidden">Loading...</span>
                 </Spinner>
               ) : (
-                <div>
-
-                  {/* Messages */}
-
-                  <InputGroup className="mt-3">
-                    <Form.Control style={{ background: "#E0E0E0", border: "none" }}
-                      type="text"
-                      placeholder="Enter a message..."
-                      onKeyDown={sendMessage}
-                      onChange={typingHandler}
-                      value={newMessage}
-                    />
-                  </InputGroup>
+                <div style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  overflowY: "scroll",
+                  scrollbarWidth: "none"
+                }}>
+                  <ScrollableChat messages={messages} />
                 </div>
               )}
+
+              <InputGroup className="mt-3">
+                <Form.Control style={{ background: "#E0E0E0", border: "none" }}
+                  type="text"
+                  placeholder="Enter a message..."
+                  onKeyDown={sendMessage}
+                  onChange={typingHandler}
+                  value={newMessage}
+                />
+              </InputGroup>
             </div>
           </div>
 
         ) : (
           <div>
-            <h1 style={{ fontFamily: "kalam", textAlign: "center", marginTop:"30vh" }}>Click on a user to start chatting</h1>
+            <h1 style={{ fontFamily: "kalam", textAlign: "center", marginTop: "30vh" }}>Click on a user to start chatting</h1>
           </div>
         )
       }

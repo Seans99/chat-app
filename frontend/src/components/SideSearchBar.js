@@ -101,7 +101,7 @@ function SideSearchBar() {
               >
                 <Offcanvas.Header closeButton>
                   <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                    Search user
+                    Search users
                   </Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>

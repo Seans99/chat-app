@@ -22,7 +22,10 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
   const [renameLoading, setRenameLoading] = useState(false)
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("")
+
   const [socketConnected, setSocketConnected] = useState(false)
+  const [typing, setTyping] = useState(false)
+  const [isTyping, setIsTyping] = useState(false)
 
   // MODAL USESTATE
   const [show, setShow] = useState(false);
@@ -53,6 +56,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
 
   const sendMessage = async (e) => {
     if (e.key === "Enter" && newMessage) {
+      socket.emit("stop typing", selectedChat._id)
       try {
         setNewMessage("")
         const data = { content: newMessage, chatId: selectedChat._id };
@@ -83,6 +87,8 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", () => setSocketConnected(true));
+    socket.on("typing", () => setIsTyping(true))
+    socket.on("stop typing", () => setIsTyping(false))
   }, [])
 
   useEffect(() => {
@@ -102,6 +108,23 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
+
+    if (!socketConnected) return;
+
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", selectedChat._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", selectedChat._id);
+        setTyping(false);
+      }
+    }, timerLength);
   }
 
   const handleRemove = async (user1) => {
@@ -332,9 +355,12 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                   overflowY: "scroll",
                   scrollbarWidth: "none"
                 }}>
-                  <ScrollableChat messages={messages} />
+                    <ScrollableChat messages={messages} />
+                    {isTyping ? <div>{getSender(user, selectedChat.users)} is typing...</div> : <></>}
+
                 </div>
               )}
+
 
               <InputGroup className="mt-3">
                 <Form.Control style={{ background: "#E0E0E0", border: "none" }}

@@ -342,7 +342,8 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
               minHeight: "70vh",
               borderRadius: "5px",
               overflow: "hidden",
-              marginTop: "2%"
+              marginTop: "2%",
+              maxHeight: "70vh"
             }}>
               {loading ? (
                 <Spinner animation="border" role="status" variant="success" style={{ margin: "auto", alignSelf: "center" }}>

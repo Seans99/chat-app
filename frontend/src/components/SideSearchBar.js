@@ -22,7 +22,7 @@ function SideSearchBar() {
 
   const logout = () => {
     localStorage.removeItem("userInfo");
-    navigate("/");
+    navigate(0);
   }
 
   const handleSearch = async (e) => {

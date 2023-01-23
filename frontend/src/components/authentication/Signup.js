@@ -69,7 +69,7 @@ function Signup() {
 
     try {
       const data = { name, email, password, picture };
-      fetch('/api/user', {
+      await fetch('/api/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

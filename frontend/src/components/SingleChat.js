@@ -8,6 +8,10 @@ import viewIcon from "../assets/images/view.png"
 import UserBadgeItem from './UserAvatar/UserBadgeItem';
 import UserListItem from './UserAvatar/UserListItem';
 import ScrollableChat from './ScrollableChat';
+import io from "socket.io-client"
+
+const ENDPOINT = "http://localhost:5000";
+let socket, selectedChatCompare;
 
 function SingleChat({ fetchAgain, setFetchAgain }) {
   const { user, selectedChat, setSelectedChat } = ChatState();
@@ -18,6 +22,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
   const [renameLoading, setRenameLoading] = useState(false)
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("")
+  const [socketConnected, setSocketConnected] = useState(false)
 
   // MODAL USESTATE
   const [show, setShow] = useState(false);
@@ -30,28 +35,20 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
 
     try {
       setLoading(true)
-      const data = await fetch(`/api/message/${selectedChat._id}`, {
+      const res = await fetch(`/api/message/${selectedChat._id}`, {
         method: 'GET',
         headers: {
+          'Content-Type': 'application/json',
           "Authorization": `Bearer ${user.token}`
-        }
-      }).then(data => {
-        return data.json();
+        },
       });
+      const data = await res.json();
       setMessages(data)
       setLoading(false)
-      console.log(data)
+      socket.emit("join chat", selectedChat._id)
     } catch (error) {
       return alert("Failed to load messages!")
     }
-  }
-
-  useEffect(() => {
-    fetchMessages();
-  }, [selectedChat])
-
-  const typingHandler = (e) => {
-    setNewMessage(e.target.value);
   }
 
   const sendMessage = async (e) => {
@@ -70,6 +67,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
           .then((response) => response.json())
           .then((data) => {
             console.log('Success:', data);
+            socket.emit("new message", data)
             setMessages([...messages, data])
           })
           .catch((error) => {
@@ -80,6 +78,31 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         return alert("Error sending message!");
       }
     }
+  }
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connected", () => setSocketConnected(true));
+  }, [])
+
+  useEffect(() => {
+    fetchMessages();
+    selectedChatCompare = selectedChat;
+  }, [selectedChat])
+  
+  useEffect(() => {
+    socket.on("message received", (newMessageReceived) => {
+      if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
+        // Give notification
+      } else {
+        setMessages([...messages, newMessageReceived])
+      }
+    })
+  })
+
+  const typingHandler = (e) => {
+    setNewMessage(e.target.value);
   }
 
   const handleRemove = async (user1) => {

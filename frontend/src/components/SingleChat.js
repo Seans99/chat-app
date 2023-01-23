@@ -8,7 +8,7 @@ import viewIcon from "../assets/images/view.png"
 import UserBadgeItem from './UserAvatar/UserBadgeItem';
 import UserListItem from './UserAvatar/UserListItem';
 import ScrollableChat from './ScrollableChat';
-import io from "socket.io-client"
+import { io } from "socket.io-client"
 
 const ENDPOINT = "http://localhost:5000";
 let socket, selectedChatCompare;
@@ -66,7 +66,6 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log('Success:', data);
             socket.emit("new message", data)
             setMessages([...messages, data])
           })
@@ -90,7 +89,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
     fetchMessages();
     selectedChatCompare = selectedChat;
   }, [selectedChat])
-  
+
   useEffect(() => {
     socket.on("message received", (newMessageReceived) => {
       if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {

@@ -16,7 +16,7 @@ function SideSearchBar() {
   const [loading, setLoading] = useState(false)
   const [loadingChat, setLoadingChat] = useState();
 
-  const { user, setSelectedChat, selectedChat, chats, setChats } = ChatState();
+  const { user, setSelectedChat, chats, setChats } = ChatState();
 
   const navigate = useNavigate();
 

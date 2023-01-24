@@ -5,7 +5,7 @@ import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from '../
 import { ChatState } from '../context/ChatProvider'
 import "./ScrollableChat.css"
 
-function ScrollableChat({ messages }) {
+const ScrollableChat = ({ messages }) => {
   const { user } = ChatState()
 
   return (
@@ -31,6 +31,7 @@ function ScrollableChat({ messages }) {
                       src={m.sender.picture}
                       width={30}
                       height={30}
+                      alt={m.sender.name}
                     />
                   </Button>
                 )}

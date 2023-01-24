@@ -40,6 +40,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       const data = await fetch(`/api/message/${selectedChat._id}`, {
         method: 'GET',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${user.token}`
         }
       }).then(data => {
@@ -71,8 +72,6 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
           .then((data) => {
             socket.emit("new message", data);
             setMessages([...messages, data]);
-
-            
           })
           .catch((error) => {
             console.error('Error:', error);
@@ -88,27 +87,31 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", () => setSocketConnected(true));
-    socket.on("typing", () => setIsTyping(true))
-    socket.on("stop typing", () => setIsTyping(false))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    socket.on("typing", () => setIsTyping(true));
+    socket.on("stop typing", () => setIsTyping(false));
+
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     fetchMessages();
+
     selectedChatCompare = selectedChat;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChat])
+    // eslint-disable-next-line
+  }, [selectedChat]);
 
   useEffect(() => {
     socket.on("message received", (newMessageReceived) => {
-      if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
-        // Give notification
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageReceived.chat._id
+      ) {
+        
       } else {
-        setMessages([...messages, newMessageReceived])
+        setMessages([...messages, newMessageReceived]);
       }
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  })
+    });
+  });
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
@@ -274,7 +277,8 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                 onClick={() => setSelectedChat("")}
                 style={{ cursor: "pointer" }}
               />
-              {!selectedChat.isGroupChat ? (
+              {messages &&
+                !selectedChat.isGroupChat ? (
                 <>
                   <div style={{ fontFamily: "kalam", fontWeight: "bold", fontSize: "110%" }}>
                     {getSender(user, selectedChat.users).toUpperCase()}

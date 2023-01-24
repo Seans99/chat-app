@@ -22,8 +22,8 @@ function ScrollableChat({ messages }) {
                   <Button
                     variant="light"
                     {...triggerHandler}
-                  className="d-inline-flex align-items-center"
-                  style={{ padding: "0", backgroundColor:"#E8E8E8", border:"none"}}
+                    className="d-inline-flex align-items-center"
+                    style={{ padding: "0", backgroundColor: "#E8E8E8", border: "none" }}
                   >
                     <Image
                       ref={ref}
@@ -33,7 +33,6 @@ function ScrollableChat({ messages }) {
                       height={30}
                     />
                   </Button>
-
                 )}
               </OverlayTrigger>
             )}

@@ -36,7 +36,7 @@ function SideSearchBar() {
       const data = await fetch(`/api/user?search=${search}`, {
         method: 'GET',
         headers: {
-          "Authorization": `Bearer ${user.token}`
+          Authorization: `Bearer ${user.token}`
         }
       }).then(data => {
         return data.json();
@@ -57,7 +57,7 @@ function SideSearchBar() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${user.token}`
+          Authorization: `Bearer ${user.token}`
         },
         body: JSON.stringify(data),
       })

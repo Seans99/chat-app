@@ -19,7 +19,6 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false)
-  const [renameLoading, setRenameLoading] = useState(false)
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("")
 
@@ -38,17 +37,17 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
 
     try {
       setLoading(true)
-      const res = await fetch(`/api/message/${selectedChat._id}`, {
+      const data = await fetch(`/api/message/${selectedChat._id}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          "Authorization": `Bearer ${user.token}`
-        },
+          Authorization: `Bearer ${user.token}`
+        }
+      }).then(data => {
+        return data.json();
       });
-      const data = await res.json();
+      socket.emit("join chat", selectedChat._id)
       setMessages(data)
       setLoading(false)
-      socket.emit("join chat", selectedChat._id)
     } catch (error) {
       return alert("Failed to load messages!")
     }
@@ -64,14 +63,16 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            "Authorization": `Bearer ${user.token}`
+            Authorization: `Bearer ${user.token}`
           },
           body: JSON.stringify(data),
         })
           .then((response) => response.json())
           .then((data) => {
-            socket.emit("new message", data)
-            setMessages([...messages, data])
+            socket.emit("new message", data);
+            setMessages([...messages, data]);
+
+            
           })
           .catch((error) => {
             console.error('Error:', error);
@@ -89,11 +90,13 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => setIsTyping(true))
     socket.on("stop typing", () => setIsTyping(false))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     fetchMessages();
     selectedChatCompare = selectedChat;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChat])
 
   useEffect(() => {
@@ -104,6 +107,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         setMessages([...messages, newMessageReceived])
       }
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   })
 
   const typingHandler = (e) => {
@@ -139,7 +143,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${user.token}`
+          Authorization: `Bearer ${user.token}`
         },
         body: JSON.stringify(data),
       })
@@ -178,7 +182,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${user.token}`
+          Authorization: `Bearer ${user.token}`
         },
         body: JSON.stringify(data),
       })
@@ -204,13 +208,12 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
     if (!groupChatName) return
 
     try {
-      setRenameLoading(true);
       const data = { chatId: selectedChat._id, chatName: groupChatName };
       await fetch('/api/chat/rename', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${user.token}`
+          Authorization: `Bearer ${user.token}`
         },
         body: JSON.stringify(data),
       })
@@ -219,16 +222,13 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
           console.log('Success:', data);
           setSelectedChat(data);
           setFetchAgain(!fetchAgain);
-          setRenameLoading(false);
         })
         .catch((error) => {
           console.error('Error:', error);
-          setRenameLoading(false);
           setGroupChatName("")
           return alert("An error occured, please try again later.")
         });
     } catch (error) {
-      setRenameLoading(false);
       setGroupChatName("")
       return alert("Error renaming group");
     }
@@ -245,7 +245,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       const data = await fetch(`/api/user?search=${search}`, {
         method: 'GET',
         headers: {
-          "Authorization": `Bearer ${user.token}`
+          Authorization: `Bearer ${user.token}`
         }
       }).then(data => {
         return data.json();

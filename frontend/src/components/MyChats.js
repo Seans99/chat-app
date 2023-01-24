@@ -29,7 +29,7 @@ function MyChats({fetchAgain}) {
       const data = await fetch(`/api/chat`, {
         method: 'GET',
         headers: {
-          "Authorization": `Bearer ${user.token}`
+          Authorization: `Bearer ${user.token}`
         }
       }).then(data => {
         return data.json();
@@ -57,7 +57,7 @@ function MyChats({fetchAgain}) {
       const data = await fetch(`/api/user?search=${search}`, {
         method: 'GET',
         headers: {
-          "Authorization": `Bearer ${user.token}`
+          Authorization: `Bearer ${user.token}`
         }
       }).then(data => {
         return data.json();
@@ -83,7 +83,7 @@ function MyChats({fetchAgain}) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${user.token}`
+          Authorization: `Bearer ${user.token}`
         },
         body: JSON.stringify(data),
       })

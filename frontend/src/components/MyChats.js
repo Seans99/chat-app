@@ -43,6 +43,8 @@ function MyChats({fetchAgain}) {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
+
+    // eslint-disable-next-line
   }, [fetchAgain])
 
   const handleSearch = async (query) => {
@@ -98,7 +100,6 @@ function MyChats({fetchAgain}) {
           handleClose();
         })
         .catch((error) => {
-          console.error('Error:', error);
           return alert("An error occured, please try again later.")
         });
     } catch (error) {
@@ -179,13 +180,22 @@ function MyChats({fetchAgain}) {
                   marginBottom: "5%",
                   marginTop: "5%",
                   padding: "3%",
-                  borderRadius: "10px"
+                  borderRadius: "10px",
+                  fontSize: "20px",
                 }} key={chat._id}>
                   <div>
                     {!chat.isGroupChat
                       ? getSender(loggedUser, chat.users)
                       : chat.chatName}
                   </div>
+                  {chat.latestMessage && (
+                    <p style={{fontSize:"13px", marginBottom:"2%"}}>
+                      <b>{chat.latestMessage.sender.name} : </b>
+                      {chat.latestMessage.content.length > 50
+                        ? chat.latestMessage.content.substring(0, 51) + "..."
+                        : chat.latestMessage.content}
+                    </p>
+                  )}
                 </Container>
               ))}
             </div>

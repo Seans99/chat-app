@@ -58,7 +58,7 @@ function Signup() {
 
   const checkUpperCase = (str) => {
     const chars = str.split('');
-    if (chars[0] == chars[0].toUpperCase) {
+    if (chars[0] === chars[0].toUpperCase) {
       return true
     }
   }

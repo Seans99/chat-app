@@ -8,6 +8,7 @@ import ProfileModal from './Modals/ProfileModal';
 import { useNavigate } from "react-router-dom";
 import ChatLoading from './ChatLoading';
 import UserListItem from './UserAvatar/UserListItem';
+import { getSender } from '../config/ChatLogics';
 
 function SideSearchBar() {
 
@@ -16,7 +17,7 @@ function SideSearchBar() {
   const [loading, setLoading] = useState(false)
   const [loadingChat, setLoadingChat] = useState();
 
-  const { user, setSelectedChat, chats, setChats } = ChatState();
+  const { user, setSelectedChat, chats, setChats, notification, setNotification } = ChatState();
 
   const navigate = useNavigate();
 
@@ -71,7 +72,7 @@ function SideSearchBar() {
         .catch((error) => {
           return alert("An error occured, please try again later.")
         });
-      
+
     } catch (error) {
       return alert("Error fetching the chat!");
     }
@@ -120,7 +121,7 @@ function SideSearchBar() {
                       <UserListItem key={user._id} user={user} handleFunction={() => accessChat(user._id)} />
                     ))
                   )}
-                  {loadingChat && <Spinner style={{margin:"0 auto !important"}} animation="border" varieant="success" ml="auto" d="flex" />}
+                  {loadingChat && <Spinner style={{ margin: "0 auto !important" }} animation="border" varieant="success" ml="auto" d="flex" />}
                 </Offcanvas.Body>
               </Navbar.Offcanvas>
             </Container>
@@ -128,11 +129,42 @@ function SideSearchBar() {
         ))}
         <h1 className="searchbarTitle" ><span className="live">Live</span> chat</h1>
         <div style={{ display: "flex" }}>
-          <DropdownButton style={{ marginLeft: "-10%" }} id="dropdown-search-bar" title={<img className="bell-img" src={bellIcon} alt="bell-icon" />} variant="success">
-            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+          <DropdownButton
+            style={{ marginLeft: "-10%" }}
+            id="dropdown-search-bar"
+            title={<img className="bell-img"
+              src={bellIcon} alt="bell-icon" />}
+            variant="success">
+            <div style={{ textAlign: "center" }}>
+              {!notification.length && "No New Messages"}
+              {notification.map((notif) => (
+                <Dropdown.Item
+                  key={notif._id}
+                  onClick={() => {
+                    setSelectedChat(notif.chat);
+                    setNotification(notification.filter((n) => n !== notif));
+                  }}
+                >
+                  {notif.chat.isGroupChat
+                    ? `New Message in ${notif.chat.chatName}`
+                    : `New Message from ${getSender(user, notif.chat.users)}`}
+                </Dropdown.Item>
+              ))}
+            </div>
           </DropdownButton>
+          {notification.length > 0 && <div>
+            <p style={{
+              background: "red",
+              color: "white",
+              zIndex: "2",
+              position: "absolute",
+              marginLeft: "-15px",
+              marginTop: "-8px",
+              borderRadius: "50px",
+              paddingLeft: "8px",
+              paddingRight: "8px"
+            }}>{notification.length}</p>
+          </div>}
           <span style={{ margin: "5%" }}></span>
           <DropdownButton id="dropdown-search-bar" title={
             <Image src={user.picture} width={"25"} height={"25"} />

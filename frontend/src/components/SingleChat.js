@@ -108,7 +108,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       ) {
         if (!notification.includes(newMessageReceived)) {
           setNotification([newMessageReceived, ...notification]);
-          setFetchAgain(!fetchAgain)
+          setFetchAgain(!fetchAgain);
         }
       } else {
         setMessages([...messages, newMessageReceived]);

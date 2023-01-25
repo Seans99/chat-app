@@ -361,7 +361,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                   scrollbarWidth: "none"
                 }}>
                     <ScrollableChat messages={messages} />
-                    {isTyping ? <div>{getSender(user, selectedChat.users)} is typing...</div> : <></>}
+                    {isTyping ? <div>User is typing...</div> : <></>}
 
                 </div>
               )}

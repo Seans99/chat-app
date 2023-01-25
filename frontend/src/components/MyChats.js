@@ -79,6 +79,9 @@ function MyChats({fetchAgain}) {
     
     try {
       const data = { name: groupChatName, users: JSON.stringify(selectedUsers.map((u) => u._id)) };
+      if (selectedUsers.length < 2) {
+        return alert("Minimum users to add in a group chat is 2")
+      }
       await fetch('/api/chat/group', {
         method: 'POST',
         headers: {

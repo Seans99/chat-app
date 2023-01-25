@@ -35,7 +35,6 @@ function MyChats({fetchAgain}) {
         return data.json();
       });
       setChats(data);
-      console.log(data);
     } catch (error) {
       return alert("Failed to load the chats!");
     }
@@ -62,7 +61,6 @@ function MyChats({fetchAgain}) {
       }).then(data => {
         return data.json();
       });
-      console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -92,7 +90,6 @@ function MyChats({fetchAgain}) {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log('Success:', data);
           setChats([data, ...chats])
           setSelectedUsers([])
           setGroupChatName()

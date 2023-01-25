@@ -41,7 +41,6 @@ function SideSearchBar() {
       }).then(data => {
         return data.json();
       });
-      console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -63,7 +62,6 @@ function SideSearchBar() {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log('Success:', data);
           if (!chats.find((c) => c._id === data._id)) {
             setChats([data, ...chats])
           }
@@ -71,7 +69,6 @@ function SideSearchBar() {
           setLoadingChat(false);
         })
         .catch((error) => {
-          console.error('Error:', error);
           return alert("An error occured, please try again later.")
         });
       

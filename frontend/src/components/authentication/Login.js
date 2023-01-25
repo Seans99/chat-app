@@ -28,15 +28,12 @@ function Login() {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log('Success:', data);
           localStorage.setItem("userInfo", JSON.stringify(data));
           navigate("/chats");
         })
         .catch((error) => {
-          console.error('Error:', error);
           return alert("An error occured, please try again later.")
         });
-      console.log(data);
     } catch (error) {
       return alert("An error occured, please try again later.")
     }

@@ -14,7 +14,8 @@ const ENDPOINT = "http://localhost:5000";
 let socket, selectedChatCompare;
 
 function SingleChat({ fetchAgain, setFetchAgain }) {
-  const { user, selectedChat, setSelectedChat } = ChatState();
+  const { user, selectedChat, setSelectedChat, notification, setNotification } = ChatState();
+
   const [groupChatName, setGroupChatName] = useState();
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -74,7 +75,6 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
             setMessages([...messages, data]);
           })
           .catch((error) => {
-            console.error('Error:', error);
             return alert("An error occured, please try again later.")
           });
       } catch (error) {
@@ -106,7 +106,10 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageReceived.chat._id
       ) {
-        
+        if (!notification.includes(newMessageReceived)) {
+          setNotification([newMessageReceived, ...notification]);
+          setFetchAgain(!fetchAgain)
+        }
       } else {
         setMessages([...messages, newMessageReceived]);
       }
@@ -152,14 +155,12 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log('Success:', data);
           user1._id === user._id ? setSelectedChat() : setSelectedChat(data)
           setFetchAgain(!fetchAgain);
           fetchMessages();
           setLoading(false);
         })
         .catch((error) => {
-          console.error('Error:', error);
           setLoading(false);
           return alert("An error occured, please try again later.")
         });
@@ -191,13 +192,11 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log('Success:', data);
           setSelectedChat(data);
           setFetchAgain(!fetchAgain);
           setLoading(false);
         })
         .catch((error) => {
-          console.error('Error:', error);
           setLoading(false);
           return alert("An error occured, please try again later.")
         });
@@ -222,12 +221,10 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log('Success:', data);
           setSelectedChat(data);
           setFetchAgain(!fetchAgain);
         })
         .catch((error) => {
-          console.error('Error:', error);
           setGroupChatName("")
           return alert("An error occured, please try again later.")
         });
@@ -253,15 +250,12 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       }).then(data => {
         return data.json();
       });
-      console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
       return alert("Failed to load search results!");
     }
   }
-
-
 
   return (
     <>

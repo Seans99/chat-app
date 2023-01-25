@@ -28,7 +28,6 @@ function Signup() {
       alert("Please select an image!")
       return;
     }
-    console.log(images);
     if (images.type === 'image/jpeg' || images.type === 'image/png') {
       if (images.size >= 1048576) {
         return alert("Max file size is 1mb");
@@ -47,10 +46,9 @@ function Signup() {
         .then((res) => res.json())
         .then((data) => {
           setPicture(data.url.toString());
-          console.log(data.url.toString());
         })
         .catch((err) => {
-          console.log(err);
+          alert("An error occured!")
         });
     } else {
       alert("Please select an image!")
@@ -95,13 +93,11 @@ function Signup() {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log('Success:', data);
           localStorage.setItem("userInfo", JSON.stringify(data));
         })
         .catch((error) => {
-          console.error('Error:', error);
+          alert("AN error occured!")
         });
-      console.log(data);
       navigate("/chats");
     } catch (error) {
       return alert("An error occured, please try again later.")

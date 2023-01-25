@@ -10,6 +10,32 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Please fill in all the fields!")
   }
 
+  if (password.length < 8) {
+    res.status(400);
+    throw new Error("Minimum password length is 8!")
+  }
+
+  const checkUpperCase = (str) => {
+    const chars = str.split('');
+    if (chars[0] == chars[0].toUpperCase) {
+      return true
+    }
+  }
+
+  if (checkUpperCase(password) === false) {
+    res.status(400);
+    throw new Error("Password must begin with an uppercase!")
+  }
+
+  function stringContainsNumber(_string) {
+    return /\d/.test(_string);
+  }
+
+  if (stringContainsNumber(password) === false) {
+    res.status(400);
+    throw new Error("password must contain a number!")
+  }
+
   const userExists = await User.findOne({ email });
 
   if (userExists) {

@@ -6,12 +6,18 @@ import userRoutes from "./routes/userRoutes.js"
 import chatRoutes from "./routes/chatRoutes.js"
 import messageRoutes from "./routes/messageRoutes.js"
 import { Server } from "socket.io";
+import mongoSanitize from "express-mongo-sanitize"
 
 dotenv.config();
 connectDB();
 const app = express();
 
 app.use(express.json());
+
+// Prevents MongoDB injections
+app.use(mongoSanitize({
+  replaceWith: "_"
+}))
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);

@@ -1,15 +1,41 @@
 import React from 'react'
-import { OverlayTrigger, Tooltip, Image, Button } from 'react-bootstrap'
-import ScrollableFeed from "react-scrollable-feed"
+import { OverlayTrigger, Tooltip, Image, Button, Overflow } from 'react-bootstrap'
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from '../config/ChatLogics'
 import { ChatState } from '../context/ChatProvider'
 import "./ScrollableChat.css"
 
+
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState()
 
+  let swear = [
+    'arse',
+    'ass',
+    'asshole',
+    'bastard',
+    'bitch',
+    'bollocks',
+    'bugger',
+    'bullshit',
+    'crap',
+    'damn',
+    'frigger',
+    'fuck',
+    'fucker',
+    'shit',
+  ]
+
+  const swearCheck = (text) => {
+    const foundSwears = swear.filter(word => text.toLowerCase().includes(word.toLowerCase()));
+    if (foundSwears.length) {
+      return "****"
+    } else {
+      return text
+    }
+  }
+
   return (
-    <ScrollableFeed>
+    <div className="overflow-auto">
       {messages && messages.map((m, i) => (
         <div style={{ display: "flex" }} key={m._id}>
           {(isSameSender(messages, m, i, user._id) ||
@@ -44,11 +70,11 @@ const ScrollableChat = ({ messages }) => {
             marginLeft: isSameSenderMargin(messages, m, i, user._id),
             marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
           }}>
-            {m.content}
+            {swearCheck(m.content)}
           </span>
         </div>
       ))}
-    </ScrollableFeed>
+    </div>
   )
 }
 

@@ -1,12 +1,9 @@
 import React from 'react'
 import { Container, Card } from "react-bootstrap"
-import { ChatState } from '../context/ChatProvider'
 import SingleChat from './SingleChat';
 
-function ChatBox({fetchAgain, setFetchAgain}) {
-
-  const { selectedChat } = ChatState();
-
+function ChatBox({ fetchAgain, setFetchAgain }) {
+  
   return (
     <Container style={{maxWidth:"1680px"}}>
       <Card style={{

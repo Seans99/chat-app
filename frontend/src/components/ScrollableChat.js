@@ -3,36 +3,15 @@ import { OverlayTrigger, Tooltip, Image, Button, Overflow } from 'react-bootstra
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from '../config/ChatLogics'
 import { ChatState } from '../context/ChatProvider'
 import "./ScrollableChat.css"
+import { Profanity, ProfanityOptions } from '@2toad/profanity';
 
 
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState()
 
-  let swear = [
-    'arse',
-    'ass',
-    'asshole',
-    'bastard',
-    'bitch',
-    'bollocks',
-    'bugger',
-    'bullshit',
-    'crap',
-    'damn',
-    'frigger',
-    'fuck',
-    'fucker',
-    'shit',
-  ]
-
-  const swearCheck = (text) => {
-    const foundSwears = swear.filter(word => text.toLowerCase().includes(word.toLowerCase()));
-    if (foundSwears.length) {
-      return "****"
-    } else {
-      return text
-    }
-  }
+  const options = new ProfanityOptions();
+  options.grawlix = '*****';
+  const profanity = new Profanity(options);
 
   return (
     <div className="overflow-auto">
@@ -58,7 +37,7 @@ const ScrollableChat = ({ messages }) => {
                       width={30}
                       height={30}
                       alt={m.sender.name}
-                    />
+                  />
                   </Button>
                 )}
               </OverlayTrigger>
@@ -70,7 +49,7 @@ const ScrollableChat = ({ messages }) => {
             marginLeft: isSameSenderMargin(messages, m, i, user._id),
             marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
           }}>
-            {swearCheck(m.content)}
+            {profanity.censor(m.content)}
           </span>
         </div>
       ))}

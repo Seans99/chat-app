@@ -170,6 +170,35 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
     }
   }
 
+  const handleRemoveSelf = async (user1) => {
+    try {
+      setLoading(true)
+      const data = { chatId: selectedChat._id, userId: user1._id };
+      await fetch('/api/chat/groupremove', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          user1._id === user._id ? setSelectedChat() : setSelectedChat(data)
+          setFetchAgain(!fetchAgain);
+          fetchMessages();
+          setLoading(false);
+        })
+        .catch((error) => {
+          setLoading(false);
+          return alert("An error occured, please try again later.")
+        });
+    } catch (error) {
+      setLoading(false);
+      return alert("Error adding user to group");
+    }
+  }
+
   const handleAddUser = async (user1) => {
     if (selectedChat.users.find((u) => u._id === user1._id)) {
       return alert("User is already in the group!")
@@ -302,7 +331,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                         ))}
                       </div>
 
-                      <Form preventDefault style={{ display: "flex", flexDirection: "column", width: "60%", margin: "0 auto", paddingBottom: "10%" }}>
+                      <Form style={{ display: "flex", flexDirection: "column", width: "60%", margin: "0 auto", paddingBottom: "10%" }}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                           <InputGroup>
                             <Form.Control type="text" placeholder="Chat name" value={groupChatName} onChange={(e) => setGroupChatName(e.target.value)} />
@@ -321,7 +350,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                           ))
                         )}
 
-                        <Button id="sendMessageButton" variant="danger" onClick={() => handleRemove(user)}>Leave group</Button>
+                        <Button id="leaveButton" variant="danger" onClick={() => handleRemoveSelf(user)}>Leave group</Button>
                       </Form>
                     </Modal.Body>
                   </Modal>

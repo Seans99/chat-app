@@ -1,5 +1,5 @@
 import React from 'react'
-import { OverlayTrigger, Tooltip, Image, Button, Overflow } from 'react-bootstrap'
+import { OverlayTrigger, Tooltip, Image, Button } from 'react-bootstrap'
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from '../config/ChatLogics'
 import { ChatState } from '../context/ChatProvider'
 import "./ScrollableChat.css"

@@ -28,7 +28,7 @@ const ScrollableChat = ({ messages }) => {
                     variant="light"
                     {...triggerHandler}
                     className="d-inline-flex align-items-center"
-                    style={{ padding: "0", backgroundColor: "#E8E8E8", border: "none" }}
+                    style={{ padding: "0", backgroundColor: "#E8E8E8", border: "none", marginBottom:"-1%" }}
                   >
                     <Image
                       ref={ref}

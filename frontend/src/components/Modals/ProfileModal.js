@@ -17,7 +17,7 @@ function ProfileModal({ user, children }) {
         <Modal.Header closeButton style={{border:"none"}}>
         </Modal.Header>
         <Modal.Body>
-          <h1 style={{ fontSize: "200%", fontFamily: "kalam", margin: "0 auto", marginBottom: "1%" }}>My profile</h1>
+          <h1 style={{ fontSize: "200%", fontFamily: "kalam", margin: "0 auto", marginBottom: "1%" }}>Profile</h1>
           <hr style={{ width: "30%", margin: "0 auto", marginBottom: "5%" }} />
           <Image src={user.picture} alt="profile-pic" width={300} height={300} style={{ marginBottom: "2%" }} />
           <p style={{ fontSize: "150%" }}>{user.name}</p>

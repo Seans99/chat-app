@@ -10,30 +10,16 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Please fill in all the fields!")
   }
 
-  if (password.length < 8) {
+  const checkPassword = (pwd) => {
+    let re = /^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/;
+    return re.test(pwd);
+  };
+
+  if (!checkPassword(password)) {
     res.status(400);
-    throw new Error("Minimum password length is 8!")
-  }
-
-  const checkUpperCase = (str) => {
-    const chars = str.split('');
-    if (chars[0] == chars[0].toUpperCase) {
-      return true
-    }
-  }
-
-  if (checkUpperCase(password) === false) {
-    res.status(400);
-    throw new Error("Password must begin with an uppercase!")
-  }
-
-  function stringContainsNumber(_string) {
-    return /\d/.test(_string);
-  }
-
-  if (stringContainsNumber(password) === false) {
-    res.status(400);
-    throw new Error("password must contain a number!")
+    throw new Error(
+      'The password must contain at least 8 characters, one upper case and one special character'
+    );
   }
 
   const userExists = await User.findOne({ email });

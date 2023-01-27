@@ -56,30 +56,21 @@ function Signup() {
     }
   }
 
-  const checkUpperCase = (str) => {
-    const chars = str.split('');
-    if (chars[0] === chars[0].toUpperCase) {
-      return true
-    }
-  }
-
-  function stringContainsNumber(_string) {
-    return /\d/.test(_string);
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !password || !picture) {
       return alert("Please fill in all the fields!");
     }
-    if (password !== confirmPassword) {
-      return alert("Passwords do not match!")
-    } else if (password.length < 8) {
-      return alert("Password length minimum is 8")
-    } else if (checkUpperCase(password) === false) {
-      return alert("Password must start with an uppercase")
-    } else if (stringContainsNumber(password) === false) {
-      return alert("Password must contain a number!")
+
+    const checkPassword = (pwd) => {
+      let re = /^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/;
+      return re.test(pwd);
+    };
+
+    if (!checkPassword(password)) {
+      return alert(
+        'Your password must contain at least 8 characters, one upper case and one special character!'
+      );
     }
 
     try {

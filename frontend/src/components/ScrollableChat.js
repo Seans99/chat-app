@@ -21,6 +21,7 @@ const ScrollableChat = ({ messages }) => {
     <div className="overflow-auto">
       {messages && messages.map((m, i) => (
         <div style={{ display: "flex" }} key={m._id}>
+          
           {(isSameSender(messages, m, i, user._id) ||
             isLastMessage(messages, i, user._id)) && (
               <OverlayTrigger
@@ -54,7 +55,12 @@ const ScrollableChat = ({ messages }) => {
             marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
           }}>
             {swearCheck(m.content)}
+            {(isSameSender(messages, m, i, user._id) ||
+              isLastMessage(messages, i, user._id)) && (
+                <p style={{ margin: "0", fontSize: "12px", color:"black" }}>- {m.sender.name}</p>
+              )}
           </span>
+          
         </div>
       ))}
     </div>

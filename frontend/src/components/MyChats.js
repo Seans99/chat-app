@@ -6,7 +6,7 @@ import { getSender } from '../config/ChatLogics';
 import "./MyChats.css"
 import UserListItem from './UserAvatar/UserListItem';
 import UserBadgeItem from './UserAvatar/UserBadgeItem';
-import { Profanity, ProfanityOptions } from '@2toad/profanity';
+import { profaneWords } from './Profanity';
 
 
 function MyChats({fetchAgain}) {
@@ -26,9 +26,14 @@ function MyChats({fetchAgain}) {
 
   const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
 
-  const options = new ProfanityOptions();
-  options.grawlix = '*****';
-  const profanity = new Profanity(options);
+  const swearCheck = (text) => {
+    const foundSwears = profaneWords.filter(word => text.toLowerCase().includes(word.toLowerCase()));
+    if (foundSwears.length) {
+      return "****"
+    } else {
+      return text
+    }
+  }
 
   const fetchChats = async () => {
     try {
@@ -199,7 +204,7 @@ function MyChats({fetchAgain}) {
                       <b>{chat.latestMessage.sender.name} : </b>
                       {chat.latestMessage.content.length > 50
                         ? chat.latestMessage.content.substring(0, 51) + "..."
-                        : profanity.censor(chat.latestMessage.content)}
+                        : swearCheck(chat.latestMessage.content)}
                     </p>
                   )}
                 </Container>

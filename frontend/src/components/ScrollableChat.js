@@ -3,15 +3,19 @@ import { OverlayTrigger, Tooltip, Image, Button } from 'react-bootstrap'
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from '../config/ChatLogics'
 import { ChatState } from '../context/ChatProvider'
 import "./ScrollableChat.css"
-import { Profanity, ProfanityOptions } from '@2toad/profanity';
-
+import { profaneWords } from './Profanity'
 
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState()
 
-  const options = new ProfanityOptions();
-  options.grawlix = '*****';
-  const profanity = new Profanity(options);
+  const swearCheck = (text) => {
+    const foundSwears = profaneWords.filter(word => text.toLowerCase().includes(word.toLowerCase()));
+    if (foundSwears.length) {
+      return "****"
+    } else {
+      return text
+    }
+  }
 
   return (
     <div className="overflow-auto">
@@ -49,7 +53,7 @@ const ScrollableChat = ({ messages }) => {
             marginLeft: isSameSenderMargin(messages, m, i, user._id),
             marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
           }}>
-            {profanity.censor(m.content)}
+            {swearCheck(m.content)}
           </span>
         </div>
       ))}

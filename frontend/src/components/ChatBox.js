@@ -1,8 +1,28 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Container, Card } from "react-bootstrap"
 import SingleChat from './SingleChat';
+import { ChatState } from '../context/ChatProvider';
 
 function ChatBox({ fetchAgain, setFetchAgain }) {
+  const { selectedChat, setSelectedChat, chats } = ChatState();
+  const [isGroupMember, setIsGroupMember] = useState(true);
+
+  useEffect(() => {
+    if (!isGroupMember) {
+      setSelectedChat('');
+    }
+  }, [isGroupMember]);
+
+  useEffect(() => {
+    if (selectedChat) {
+      setIsGroupMember(false);
+      for (let chat of chats) {
+        if (chat._id === selectedChat._id) {
+          setIsGroupMember(true);
+        }
+      }
+    }
+  }, [chats]);
   
   return (
     <Container style={{maxWidth:"1680px"}}>

@@ -8,9 +8,9 @@ import UserListItem from './UserAvatar/UserListItem';
 import UserBadgeItem from './UserAvatar/UserBadgeItem';
 import { profaneWords } from './Profanity';
 
-
 function MyChats({fetchAgain}) {
   const [loggedUser, setLoggedUser] = useState();
+
 
   // MODAL USESTATES
   const [show, setShow] = useState(false);
@@ -50,6 +50,10 @@ function MyChats({fetchAgain}) {
       return alert("Failed to load the chats!");
     }
   }
+
+  useEffect(() => {
+    fetchChats()
+  }, [chats])
 
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));

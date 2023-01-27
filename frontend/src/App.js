@@ -7,6 +7,7 @@ import ChatProvider from './context/ChatProvider';
 function App() {
   window.onbeforeunload = function () {
     localStorage.removeItem("userInfo");
+    localStorage.removeItem("loginAttempt");
     return '';
   };
   

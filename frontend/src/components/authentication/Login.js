@@ -6,6 +6,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false)
+  const [loginArr, setLoginArr] = useState([])
 
   const navigate = useNavigate();
 
@@ -13,6 +14,10 @@ function Login() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (loginArr.length === 2) {
+      return alert("You have reached max login attempts, wait 1 minute and try again.");
+    }
+
     if (!email || !password) {
       return alert("Please fill in all the fields!");
     }
@@ -32,7 +37,10 @@ function Login() {
           navigate("/chats");
         })
         .catch((error) => {
-          return alert("An error occured, please try again later.")
+          const attempt = new Date().getTime();
+          setLoginArr([...loginArr, attempt])
+          localStorage.setItem("loginAttempt", loginArr)
+          return alert("Invalid email or password.")
         });
     } catch (error) {
       return alert("An error occured, please try again later.")

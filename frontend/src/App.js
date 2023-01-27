@@ -5,6 +5,11 @@ import Chat from './pages/Chat';
 import ChatProvider from './context/ChatProvider';
 
 function App() {
+  window.onbeforeunload = function () {
+    localStorage.removeItem("userInfo");
+    return '';
+  };
+  
   return (
     <div className="App">
       <BrowserRouter>

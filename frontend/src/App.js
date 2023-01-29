@@ -5,11 +5,13 @@ import Chat from './pages/Chat';
 import ChatProvider from './context/ChatProvider';
 
 function App() {
-  window.onbeforeunload = function () {
+
+  // User has to login again on reload
+  /* window.onbeforeunload = function () {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("loginAttempt");
     return '';
-  };
+  }; */
   
   return (
     <div className="App">
